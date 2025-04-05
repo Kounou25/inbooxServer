@@ -44,10 +44,10 @@ async function otpSender(email, otp) {
 }
 
 export const createOtp = async (req, res) => {
-    const { user_id, email } = req.body;
+    const { email } = req.body;
   
-    if (!user_id || !email) {
-      return res.status(400).json({ error: "Identifiant et email sont requis." });
+    if (!email) {
+      return res.status(400).json({ error: " l'email est requis." });
     }
   
     try {
@@ -61,7 +61,7 @@ export const createOtp = async (req, res) => {
       // Insertion dans la base
       const { data, error } = await supabase
         .from("otp_codes")
-        .insert([{ user_id, code: otpCode, expires_at: expireDate }]);
+        .insert([{ email, code: otpCode, expires_at: expireDate }]);
   
       if (error) {
         return res.status(500).json({ error: "Erreur lors de la création du OTP : " + error.message });
