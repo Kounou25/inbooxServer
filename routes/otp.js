@@ -10,7 +10,7 @@ import {
 
 const router = express.Router();
 
-router.get('/', getOtp);
+// router.get('/', getOtp);
 router.post('/', createOtp);
 // router.put('/:id', updateOtp);
 // router.delete('/:id', deleteOtp);
