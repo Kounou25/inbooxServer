@@ -77,4 +77,44 @@ export const createOtp = async (req, res) => {
       return res.status(500).json({ error: "Une erreur est survenue lors de la création du OTP." });
     }
   };
+
+
+
+
+  //fonction de verification du code otp entree
+
+  export const verifyOtp = async (req, res) => {
+    const { email, otp } = req.body;
+    const now = new Date().toISOString();
+
+  
+    if (!email || !otp) {
+      return res.status(400).json({ error: "Email et OTP sont requis." });
+    }
+  
+    try {
+      // Cherche l'utilisateur avec le code OTP correspondant, non expiré
+      const { data:dataOtp, error } = await supabase
+      .from("otp_codes")
+      .select("*")
+      .eq("code", otp)
+      .eq("email", email)
+      .gt("expires_at", now) 
+      .order("expires_at", { ascending: false })
+      .limit(1);
+  
+      if (error) {
+        return res.status(500).json({ error: "Erreur lors de la vérification.",error });
+      }
+  
+      if (!dataOtp || dataOtp.length === 0) {
+        return res.status(400).json({ error: "OTP invalide ou expiré." });
+      }
+  
+      return res.status(200).json({ message: "OTP valide ✅" });
+    } catch (err) {
+      return res.status(500).json({ error: "Une erreur est survenue.",err });
+    }
+  };
+  
   
