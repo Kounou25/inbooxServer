@@ -6,8 +6,8 @@ const PORT = 3000;
 app.use(express.json());
 
 // Importer et utiliser les routes utilisateur
-const utilisateurRoutes = require('./routes/users');
-app.use('/api/users', userRoute);
+const usersRoutes = require('./routes/users');
+app.use('/api/users', usersRoutes);
 // Démarrage du serveur
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur http://localhost:${PORT}`);
