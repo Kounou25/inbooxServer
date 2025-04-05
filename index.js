@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 const app = express();
 const PORT = 3000;
 
@@ -6,9 +6,9 @@ const PORT = 3000;
 app.use(express.json());
 
 // Importer et utiliser les routes utilisateur
-const usersRoutes = require('./routes/users');
+import usersRoutes from './routes/users.js';
 app.use('/api/users', usersRoutes);
-// Démarrage du serveur
+// Démarrage du serveur 
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur http://localhost:${PORT}`);
 });
