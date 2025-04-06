@@ -72,18 +72,18 @@ export const getApiKeyByuuid = async (req, res) => {
   
       if (error) {
         console.error("Erreur Supabase :", error);
-        return res.status(500).json({ error: "Erreur lors de la récupération de la clé API." });
+        return res.status(500).json({ error: "Error occured while getting api key." });
       }
   
       if (!data) {
-        return res.status(404).json({ error: "Clé API introuvable pour cet utilisateur." });
+        return res.status(404).json({ error: "No key found for this user." });
       }
   
       return res.status(200).json(data);
   
     } catch (err) {
-      console.error("Erreur serveur :", err);
-      return res.status(500).json({ error: "Erreur interne du serveur." });
+      console.error("Server error :", err);
+      return res.status(500).json({ error: "INternal server error." });
     }
   };
   
