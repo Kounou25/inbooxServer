@@ -78,6 +78,55 @@ export const getUserByEmail = async (req, res) => {
       res.status(500).json({ error: "Erreur serveur." });
     }
   };
+
+
+
+  //login
+
+
+export const login = async (req, res) => {
+  const { email, password } = req.body;
+
+  // Vérification des champs requis
+  if (!email || !password) {
+    return res.status(400).json({ error: "Email et mot de passe requis." });
+  }
+
+  try {
+    // Chercher l'utilisateur via l'email
+    const { data: user, error } = await supabase
+      .from("users")
+      .select("*")
+      .eq("email", email)
+      .single();
+
+    if (error || !user) {
+      return res.status(401).json({ error: "Identifiants invalides." });
+    }
+
+    // Comparer les mots de passe (hashé vs entré)
+    const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: "Identifiants invalides." });
+    }
+
+    // Si tout est ok : connexion réussie
+    return res.status(200).json({
+      message: "Connexion réussie.",
+      user: {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        // tu peux ajouter d'autres champs si nécessaire
+      }
+    });
+
+  } catch (err) {
+    return res.status(500).json({ error: "Erreur lors de la connexion." });
+  }
+};
+
   
 
-export default [createUser ,getUsers, getUserByEmail];
+export default [createUser ,getUsers, getUserByEmail,login];
