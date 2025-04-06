@@ -52,3 +52,38 @@ export const getApiKeys = async (req, res) => {
         return res.status(500).json({ error: "An error occured while getting api keys." });
     }
 };
+
+
+// recuperation de la cle api par user_id
+
+export const getApiKeyByuuid = async (req, res) => {
+    const { user_id } = req.params;
+  
+    if (!user_id) {
+      return res.status(400).json({ error: "L'identifiant utilisateur (uuid) est requis." });
+    }
+  
+    try {
+      const { data, error } = await supabase
+        .from("api_keys")
+        .select("*")
+        .eq("user_id", user_id)
+        .single(); // on suppose une seule api_key par user
+  
+      if (error) {
+        console.error("Erreur Supabase :", error);
+        return res.status(500).json({ error: "Erreur lors de la récupération de la clé API." });
+      }
+  
+      if (!data) {
+        return res.status(404).json({ error: "Clé API introuvable pour cet utilisateur." });
+      }
+  
+      return res.status(200).json(data);
+  
+    } catch (err) {
+      console.error("Erreur serveur :", err);
+      return res.status(500).json({ error: "Erreur interne du serveur." });
+    }
+  };
+  
