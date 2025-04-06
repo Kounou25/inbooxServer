@@ -13,14 +13,15 @@ app.use(cors({
 // Middleware pour comprendre le JSON
 app.use(express.json());
 
-// Importer et utiliser les routes utilisateur
 import usersRoutes from './routes/users.js';
-app.use('/api/users', usersRoutes);
-
-
-// Importer et utiliser les routes otps
 import otpRoutes from './routes/otp.js';
+import apiKeysRoutes from './routes/otp.js';
+
+
+app.use('/api/users', usersRoutes);
 app.use('/api/otp', otpRoutes);
+app.use('/api/apiKeys', apiKeysRoutes);
+
 // Démarrage du serveur 
 app.listen(PORT, () => {
   console.log(`Serveur démarré sur http://localhost:${PORT}`);
