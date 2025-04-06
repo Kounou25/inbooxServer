@@ -83,6 +83,16 @@ export const createOtp = async (req, res) => {
 
   //fonction de verification du code otp entree
 
+  async function updateOtpStatus(email) {
+     const {data:updateData, error:updateError}= await supabase
+      .from("otp_codes")
+      .update({ is_used: true })
+      .eq("email", email)
+      .gt("expires_at", now) 
+      .order("expires_at", { ascending: false })
+      .limit(1);
+  }
+
   export const verifyOtp = async (req, res) => {
     const { email, otp } = req.body;
     const now = new Date().toISOString();
@@ -110,7 +120,10 @@ export const createOtp = async (req, res) => {
       if (!dataOtp || dataOtp.length === 0) {
         return res.status(400).json({ error: "OTP invalide ou expiré." });
       }
-  
+        
+
+      updateOtpStatus(email);
+
       return res.status(200).json({ message: "OTP valide ✅" });
     } catch (err) {
       return res.status(500).json({ error: "Une erreur est survenue.",err });
