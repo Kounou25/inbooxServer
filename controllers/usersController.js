@@ -46,4 +46,38 @@ export const getUsers = async (req, res) => {
     }
 };
 
-export default [createUser ,getUsers];
+
+
+
+// controllers/usersController.js
+export const getUserByEmail = async (req, res) => {
+    const { email } = req.params;
+  
+    if (!email) {
+      return res.status(400).json({ error: "Email requis." });
+    }
+  
+    try {
+      const { data, error } = await supabase
+        .from("users")
+        .select("*")
+        .eq("email", email)
+        .single(); // <- pour ne retourner qu’un seul résultat
+  
+      if (error) {
+        return res.status(500).json({ error: "Erreur lors de la récupération de l'utilisateur : " + error.message });
+      }
+  
+      if (!data) {
+        return res.status(404).json({ error: "Utilisateur non trouvé." });
+      }
+  
+      res.status(200).json(data);
+  
+    } catch (err) {
+      res.status(500).json({ error: "Erreur serveur." });
+    }
+  };
+  
+
+export default [createUser ,getUsers, getUserByEmail];
