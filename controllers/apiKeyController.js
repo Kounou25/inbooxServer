@@ -33,3 +33,22 @@ export const createApiKey = async (req, res) => {
         return res.status(500).json({ error: "An error occured during key creation." });
     }
 };
+
+
+//recuperation de toutes les cle api
+
+export const getApiKeys = async (req, res) => {
+    try {
+        const { data, error } = await supabase
+            .from("api_keys")
+            .select('*');  // Sélectionner toutes les clés API
+        
+        if (error) {
+            return res.status(500).json({ error: "Error while getting apis keys : " + error.message });
+        }
+
+        return res.status(200).json(data);  // Retourner les clés API récupérées
+    } catch (error) {
+        return res.status(500).json({ error: "An error occured while getting api keys." });
+    }
+};
