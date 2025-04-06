@@ -15,7 +15,7 @@ app.use(express.json());
 
 import usersRoutes from './routes/users.js';
 import otpRoutes from './routes/otp.js';
-import apiKeysRoutes from './routes/otp.js';
+import apiKeysRoutes from './routes/apiKeys.js';
 
 
 app.use('/api/users', usersRoutes);
