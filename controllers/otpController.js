@@ -84,6 +84,8 @@ export const createOtp = async (req, res) => {
   //fonction de verification du code otp entree
 
   async function updateOtpStatus(email) {
+    const now = new Date().toISOString(); // Format ISO, compatible avec Supabase
+    
      const {data:updateData, error:updateError}= await supabase
       .from("otp_codes")
       .update({ is_used: true })

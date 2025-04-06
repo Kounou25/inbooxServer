@@ -83,7 +83,7 @@ export const getApiKeyByuuid = async (req, res) => {
   
     } catch (err) {
       console.error("Server error :", err);
-      return res.status(500).json({ error: "INternal server error." });
+      return res.status(500).json({ error: "Internal server error." });
     }
   };
   
