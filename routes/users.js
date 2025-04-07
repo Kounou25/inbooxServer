@@ -8,7 +8,7 @@ import {
   login,
 //   updateUser,
 //   deleteUser
-} from '../controllers/usersController.js'; // N'oublie pas le .js !
+} from '../controllers/usersController.js'; 
 
 const router = express.Router();
 
