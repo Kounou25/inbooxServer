@@ -14,7 +14,35 @@ function OtpGenerator() {
 async function otpSender(email, otp) {
     const to = email;
     const subject = "Inboox OTP verification";
-    const text = `your OTP verification code is:${otp}`;
+    const text = `
+  <div style="max-width: 600px; margin: auto; font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); color: #333;">
+    
+    <h2 style="color: #4CAF50; font-size: 22px; text-align: center;">🔐 Vérification de sécurité</h2>
+    
+    <p style="font-size: 16px; line-height: 1.6;">
+      Bonjour,
+      <br><br>
+      Pour continuer, veuillez utiliser le code de vérification ci-dessous :
+    </p>
+    
+    <div style="text-align: center; margin: 30px 0;">
+      <span style="font-size: 28px; font-weight: bold; letter-spacing: 4px; color: #4CAF50;">
+        ${otp}
+      </span>
+    </div>
+
+    <p style="font-size: 15px; line-height: 1.6; color: #666;">
+      Ce code est valable pendant <strong>10 minutes</strong>. Ne le partagez avec personne pour des raisons de sécurité.
+    </p>
+
+    <hr style="margin: 40px 0; border: none; border-top: 1px solid #eee;"/>
+
+    <p style="font-size: 13px; text-align: center; color: #999;">
+      Cet e-mail a été généré automatiquement – merci de ne pas y répondre.
+    </p>
+  </div>
+`;
+
     try {
         // Configuration du transporteur SMTP
         let transporter = nodemailer.createTransport({
@@ -30,7 +58,7 @@ async function otpSender(email, otp) {
           from: process.env.EMAIL_USER,
           to,
           subject,
-          text
+          html:text
         };
     
         // Envoi de l'email
