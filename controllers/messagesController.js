@@ -1,10 +1,13 @@
 import supabase  from '../supabaseClient.js'; // Ajoute .js à la fin
+import { notifications } from './notifications.js';
 
 
 export const createMessage = async (req, res) => {
-    const { name,senderEmail,subject,message, apiKey } = req.body;
+    const { name,senderEmail,ownerEmail,subject,message, apiKey } = req.body;
+    let notificationSubject = "inboox new message";
+    let notificationTextOwner = `Hello, you have received a message from ${name} check it out on your dashboard ! \n`;
 
-    if (!name || !senderEmail || !subject || !message || !apiKey ) {
+    if (!name || !senderEmail ||!ownerEmail || !subject || !message || !apiKey ) {
         return res.status(400).json({ error: "All data are required" });
     }
 
@@ -27,6 +30,7 @@ export const createMessage = async (req, res) => {
                         return res.status(404).json({error:"The message was not sent !"})
                    
                     }else{
+                        const sendNotification = notifications(ownerEmail,notificationSubject,notificationTextOwner);
                         return res.status(200).json({message:"The message was sent successfully !"})
                     }
 

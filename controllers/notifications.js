@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
 
+dotenv.config();
 
 
 export async function notifications(ReceiverEmail, subject, text) {
