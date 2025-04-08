@@ -2,9 +2,9 @@ import supabase  from '../supabaseClient.js'; // Ajoute .js à la fin
 
 
 export const createMessage = async (req, res) => {
-    const { name,senderEmail,receiverEmail,subject,message, apiKey } = req.body;
+    const { name,senderEmail,subject,message, apiKey } = req.body;
 
-    if (!name || !senderEmail || !receiverEmail || !subject || !message || !apiKey ) {
+    if (!name || !senderEmail || !subject || !message || !apiKey ) {
         return res.status(400).json({ error: "All data are required" });
     }
 
@@ -21,9 +21,16 @@ export const createMessage = async (req, res) => {
                 }else{
 
                     const {data:messageData,error:messageError} = await supabase
-                    .from("email_sent") .insert([{user_id:ApiKey.user_id,}])
+                    .from("emails_sent") .insert([{user_id:ApiKey.user_id,to_mail:senderEmail,sender_name:name,subject:subject,body:message}]);
 
-                }
+                    if (messageError) {
+                        return res.status(404).json({error:"The message was not sent !"})
+                   
+                    }else{
+                        return res.status(200).json({message:"The message was sent successfully !"})
+                    }
+
+                } 
         
     } catch (error) {
         
